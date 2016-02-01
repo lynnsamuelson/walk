@@ -8,7 +8,7 @@ namespace Walk.Models
 {
     public class Activities
     {
-        public object Member { get; set; }
+        
         [MaxLength(120)]
         [MinLength(3)]
         [Required]

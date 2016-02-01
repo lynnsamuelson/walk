@@ -24,14 +24,12 @@ namespace Walk.Tests.Models
                new List<Activities> {
                     new Activities {
                     ActivityId = 1,
-                    Member = null,
                     ActivityName = "run",
                     Distance = 2.2,
                     Date = expected_time
                 },
                     new Activities {
                     ActivityId = 2,
-                    Member = null,
                     ActivityName = "walk",
                     Distance = 5.2,
                     Date = expected_time
@@ -40,12 +38,12 @@ namespace Walk.Tests.Models
 
             a_member.MemberId = 1;
             a_member.Family = null;
-            a_member.Name = "Joe";
+            a_member.FirstName = "Joe";
             a_member.Updated = expected_time;
             a_member.Activities = ListActivities;
 
             Assert.AreEqual(1, a_member.MemberId);
-            Assert.AreEqual("Joe", a_member.Name);
+            Assert.AreEqual("Joe", a_member.FirstName);
             Assert.AreEqual(null, a_member.Family);
             Assert.AreEqual(ListActivities, a_member.Activities);
             Assert.AreEqual(expected_time, a_member.Updated);
@@ -60,14 +58,12 @@ namespace Walk.Tests.Models
                new List<Activities> {
                     new Activities {
                     ActivityId = 1,
-                    Member = null,
                     ActivityName = "run",
                     Distance = 2.2,
                     Date = expected_time
                 },
                     new Activities {
                     ActivityId = 2,
-                    Member = null,
                     ActivityName = "walk",
                     Distance = 5.2,
                     Date = expected_time
@@ -77,12 +73,12 @@ namespace Walk.Tests.Models
             {
                 MemberId = 1,
                 Family = null,
-                Name = "Joe",
+                FirstName = "Joe",
                 Updated = expected_time,
                 Activities = ListActivities
             };
             Assert.AreEqual(1, a_member.MemberId);
-            Assert.AreEqual("Joe", a_member.Name);
+            Assert.AreEqual("Joe", a_member.FirstName);
             Assert.AreEqual(null, a_member.Family);
             Assert.AreEqual(ListActivities, a_member.Activities);
             Assert.AreEqual(expected_time, a_member.Updated);

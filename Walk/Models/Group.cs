@@ -10,6 +10,6 @@ namespace Walk.Models
         public int GroupId { get; set; }
         public string GroupName { get; set; }
         public DateTime Updated { get; set; }
-        public List<Family> Families { get; set; }
+        public List<Member> Members { get; set; }
     }
 }

@@ -161,8 +161,8 @@ namespace Walk.Tests.Models
             //Arrange
             var expected = new List<Member>
             {
-                new Member {Name = "Joan" },
-                new Member {Name = "Sally" }
+                new Member {FirstName = "Joan" },
+                new Member {FirstName = "Sally" }
             };
             mock_member_set.Object.AddRange(expected);
             ConnectMocksToDataStore(expected);
@@ -171,7 +171,7 @@ namespace Walk.Tests.Models
             var actual = repository.GetAllMembers();
 
             //Assert
-            Assert.AreEqual("Joan", actual.First().Name);
+            Assert.AreEqual("Joan", actual.First().FirstName);
             CollectionAssert.AreEqual(expected, actual);
         }
 
@@ -198,5 +198,41 @@ namespace Walk.Tests.Models
             CollectionAssert.AreEqual(expected, actual);
 
         }
+
+        [TestMethod]
+        public void WalkContextEnsureICanGetMemberById()
+        {
+            var expected = new List<Member> {
+                new Member { MemberId = 1, LastName = "Anderson", FirstName = "Bernie" },
+                new Member {MemberId = 2, LastName = "Rice", FirstName = "Laura"}
+            };
+           
+            mock_member_set.Object.AddRange(expected);
+             ConnectMocksToDataStore(expected);
+            Member Anderson = new Member { MemberId = 1, LastName = "Anderson", FirstName = "Bernie" };
+            Member actual = repository.GetMemberById(expected[0]);
+
+            Assert.AreEqual("Anderson", actual.LastName);
+           
+        }
+
+        //[TestMethod]
+        //public void WalkContextEnsureCanGetMembersForAFamily()
+        //{
+
+        //    var expected = new List<Family>
+        //    {
+        //        new Family {FamilyName = "Anderson", Group = "Fron", Members = new List<Member> { new Member { Name = "Bernie" }, new Member { Name = "Samuel" }, new Member { Name = "Ruby" }, new Member { Name = "Lynn"} } },
+        //        new Family {FamilyName = "Rice", Group = "Fron", Members = new List<Member> { new Member { Name = "Steve" }, new Member { Name = "Laura" }, new Member { Name = "Adam" }, new Member { Name = "Noah"} } }
+        //    };
+        //    mock_family_set.Object.AddRange(expected);
+        //    ConnectMocksToDataStore(expected);
+
+        //    var actual = repository.GetAllFamilyMembers(expected[0]);
+
+        //    Assert.AreEqual("Bernie", actual.First().Members[0]);
+        //    CollectionAssert.AreEqual(expected, actual);
+
+        //}
     }
 }

@@ -20,51 +20,24 @@ namespace Walk.Tests.Models
         {
             Group a_group = new Group();
             DateTime expected_time = DateTime.Now;
-            List<Member> ListMembers =
-               new List<Member> {
-                    new Member {
-                    MemberId = 1,
-                    Name = "Joe",
-                    Updated = expected_time,
-
-                },
-                    new Member {
-                    MemberId = 2,
-                    Name = "Sally",
-                    Updated = expected_time
-                }
-               };
-
-            List<Family> ListFamilies =
-               new List<Family> {
-                   new Family
-                   {
-                    FamilyId = 1,
-                    FamilyName = "Jones",
-                    Members = ListMembers,
-                    Group = null,
-                    Updated = expected_time
-                   },
-                   new Family
-                   {
-                    FamilyId = 2,
-                    FamilyName = "Anderson",
-                    Members = ListMembers,
-                    Group = null,
-                    Updated = expected_time
-                   }
-               };
-
 
             a_group.GroupId = 1;
             a_group.GroupName = "St. Andrew";
             a_group.Updated = expected_time;
-            a_group.Families = ListFamilies;
+            a_group.Members = new List<Member> {
+                new Member { FirstName = "Laura", LastName = "Rice", MemberId = 1 },
+                new Member {FirstName = "Bernie", LastName = "Anderson", MemberId = 2 }
+            };
+
+            List<Member> ListMembers = new List<Member> {
+                new Member { FirstName = "Laura", LastName = "Rice", MemberId = 1 },
+                new Member {FirstName = "Bernie", LastName = "Anderson", MemberId = 2 }
+            };
 
 
             Assert.AreEqual(1, a_group.GroupId);
             Assert.AreEqual("St. Andrew", a_group.GroupName);
-            Assert.AreEqual(ListFamilies, a_group.Families);
+            Assert.AreEqual("Laura", a_group.Members[0].FirstName);
             Assert.AreEqual(expected_time, a_group.Updated);
 
         }
@@ -74,51 +47,23 @@ namespace Walk.Tests.Models
         {
 
             DateTime expected_time = DateTime.Now;
-            List<Member> ListMembers =
-               new List<Member> {
-                    new Member {
-                    MemberId = 1,
-                    Name = "Joe",
-                    Updated = expected_time,
+            List<Member> ListMembers = new List<Member> {
+                new Member { FirstName = "Laura", LastName = "Rice", MemberId = 1 },
+                new Member {FirstName = "Bernie", LastName = "Anderson", MemberId = 2 }
+            };
 
-                },
-                    new Member {
-                    MemberId = 2,
-                    Name = "Sally",
-                    Updated = expected_time
-                }
-               };
-
-            List<Family> ListFamilies =
-               new List<Family> {
-                   new Family
-                   {
-                    FamilyId = 1,
-                    FamilyName = "Jones",
-                    Members = ListMembers,
-                    Group = null,
-                    Updated = expected_time
-                   },
-                   new Family
-                   {
-                    FamilyId = 2,
-                    FamilyName = "Anderson",
-                    Members = ListMembers,
-                    Group = null,
-                    Updated = expected_time
-                   }
-               };
+            
             Group a_group = new Group
             {
                 GroupId = 1,
                 GroupName = "St. Andrew",
-                Families = ListFamilies,
+                Members = ListMembers,
                 Updated = expected_time
             };
 
             Assert.AreEqual(1, a_group.GroupId);
             Assert.AreEqual("St. Andrew", a_group.GroupName);
-            Assert.AreEqual(ListFamilies, a_group.Families);
+            Assert.AreEqual(ListMembers, a_group.Members);
             Assert.AreEqual(expected_time, a_group.Updated);
 
         }

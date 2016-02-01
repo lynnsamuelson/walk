@@ -44,5 +44,17 @@ namespace Walk.Models
             var query = from Activities in _context.Activities select Activities;
             return query.ToList();
         }
+
+        public List<Family> GetAllFamilyMembers(Family family)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Member GetMemberById(Member member)
+        {
+            string stringMemberId = member.MemberId.ToString();
+            var query = from u in _context.Members where u.RealUser.Id == stringMemberId select u;
+            return query.SingleOrDefault();
+        }
     }
 }
