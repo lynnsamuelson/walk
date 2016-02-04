@@ -53,7 +53,7 @@ namespace Walk.Models
         public Member GetMemberById(Member member)
         {
             string stringMemberId = member.MemberId.ToString();
-            var query = from u in _context.Members where u.RealUser.Id == stringMemberId select u;
+            var query = from u in _context.Members where u.MemberId == member.MemberId select u;
             return query.SingleOrDefault();
         }
     }
