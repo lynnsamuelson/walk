@@ -45,16 +45,24 @@ namespace Walk.Models
             return query.ToList();
         }
 
-        public List<Family> GetAllFamilyMembers(Family family)
+        public List<Member> GetAllFamilyMembers( Member member)
         {
-            throw new NotImplementedException();
+            
+                var query = from u in _context.Members where u.Family == member.Family select u;
+                return query.ToList();
         }
 
         public Member GetMemberById(Member member)
         {
-            string stringMemberId = member.MemberId.ToString();
+            //string stringMemberId = member.MemberId.ToString();
             var query = from u in _context.Members where u.MemberId == member.MemberId select u;
             return query.SingleOrDefault();
         }
+
+        public List<Member> GetAllGroupMembers(Group testGroup)
+        {
+            var query = from u in _context.Members where u.Group.GroupId == testGroup.GroupId select u;
+            return query.ToList();
+        }
     }
-}
+    }

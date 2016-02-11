@@ -216,23 +216,89 @@ namespace Walk.Tests.Models
            
         }
 
-        //[TestMethod]
-        //public void WalkContextEnsureCanGetMembersForAFamily()
-        //{
+        [TestMethod]
+        public void WalkContextEnsureCanGetMembersForAFamily()
+        {
+            var time = DateTime.Now;
+            var family = new Family {FamilyName = "Anderson", FamilyId = 1, Updated = time};
+            var family2 = new Family { FamilyName = "Anderson", FamilyId = 2, Updated =time};
 
-        //    var expected = new List<Family>
-        //    {
-        //        new Family {FamilyName = "Anderson", Group = "Fron", Members = new List<Member> { new Member { Name = "Bernie" }, new Member { Name = "Samuel" }, new Member { Name = "Ruby" }, new Member { Name = "Lynn"} } },
-        //        new Family {FamilyName = "Rice", Group = "Fron", Members = new List<Member> { new Member { Name = "Steve" }, new Member { Name = "Laura" }, new Member { Name = "Adam" }, new Member { Name = "Noah"} } }
-        //    };
-        //    mock_family_set.Object.AddRange(expected);
-        //    ConnectMocksToDataStore(expected);
 
-        //    var actual = repository.GetAllFamilyMembers(expected[0]);
+            var member = new List<Member> {
+                new Member { MemberId = 1, LastName = "Anderson", FirstName = "Bernie", Family = family, Updated = time },
+                new Member {MemberId = 2, LastName = "Rice", FirstName = "Laura", Family = family2, Updated = time},
+                new Member {MemberId = 3, LastName = "Anderson", FirstName = "Ruby", Family = family, Updated = time},
+                new Member {MemberId = 4, LastName = "Rice", FirstName = "Adam", Family = family2, Updated = time},
+                new Member {MemberId = 5, LastName = "Anderson", FirstName = "Samuel", Family = family, Updated = time},
+                new Member {MemberId = 6, LastName = "Rice", FirstName = "Noah", Family = family2, Updated = time}
+            };
+            mock_member_set.Object.AddRange(member);
+            ConnectMocksToDataStore(member);
 
-        //    Assert.AreEqual("Bernie", actual.First().Members[0]);
-        //    CollectionAssert.AreEqual(expected, actual);
 
-        //}
+            var testMember = new Member { MemberId = 1, LastName = "Anderson", FirstName = "Bernie", Family = family };
+            var expectedMembers = new List<Member>
+            {
+                new Member { MemberId = 1, LastName = "Anderson", FirstName = "Bernie", Family = family, Updated = time },
+                new Member {MemberId = 3, LastName = "Anderson", FirstName = "Ruby", Family = family, Updated = time},
+                new Member {MemberId = 5, LastName = "Anderson", FirstName = "Samuel", Family = family, Updated = time}
+            };
+            var actual = repository.GetAllFamilyMembers(testMember);
+
+            Assert.AreEqual("Bernie", actual.First().FirstName);
+            Assert.AreEqual(expectedMembers[0].Family, actual[0].Family);
+            Assert.AreEqual(expectedMembers[0].MemberId, actual[0].MemberId);
+            Assert.AreEqual(expectedMembers[1].LastName, actual[1].LastName);
+            Assert.AreEqual(expectedMembers[0].Group, actual[0].Group);
+            Assert.AreEqual(expectedMembers[0].Updated, actual[0].Updated);
+            //Assert.AreEqual(expectedMembers[0], actual[0]);
+
+        }
+
+        [TestMethod]
+        public void WalkContextEnsureCanGetMembersForAGroup()
+        {
+            var time = DateTime.Now;
+            var family = new Family { FamilyName = "Anderson", FamilyId = 1, Updated = time };
+            var family2 = new Family { FamilyName = "Anderson", FamilyId = 2, Updated = time };
+            var group1 = new Group { GroupId = 1, GroupName = "St. Andrew" };
+            var group2 = new Group { GroupId = 2, GroupName = "Fron" };
+            
+
+            var member = new List<Member> {
+                new Member { MemberId = 1, LastName = "Anderson", FirstName = "Bernie", Family = family, Updated = time, Group
+                 = group1},
+                new Member {MemberId = 2, LastName = "Rice", FirstName = "Laura", Family = family2, Updated = time, Group = group2},
+                new Member {MemberId = 3, LastName = "Anderson", FirstName = "Ruby", Family = family, Updated = time, Group = group1},
+                new Member {MemberId = 4, LastName = "Rice", FirstName = "Adam", Family = family2, Updated = time, Group = group2},
+                new Member {MemberId = 5, LastName = "Anderson", FirstName = "Samuel", Family = family, Updated = time, Group = group1},
+                new Member {MemberId = 6, LastName = "Rice", FirstName = "Noah", Family = family2, Updated = time, Group = group2}
+            };
+            mock_member_set.Object.AddRange(member);
+            ConnectMocksToDataStore(member);
+
+
+            var testGroup = new Group { GroupId = 1, GroupName = "St. Andrew" };
+            var expectedMembers = new List<Member>
+            {
+                 new Member { MemberId = 1, LastName = "Anderson", FirstName = "Bernie", Family = family, Updated = time, Group
+                 = group1},
+                new Member {MemberId = 3, LastName = "Anderson", FirstName = "Ruby", Family = family, Updated = time, Group = group1},
+                new Member {MemberId = 5, LastName = "Anderson", FirstName = "Samuel", Family = family, Updated = time, Group = group1},
+            };
+            var actual = repository.GetAllGroupMembers(testGroup);
+
+            Assert.AreEqual("Bernie", actual.First().FirstName);
+            Assert.AreEqual(expectedMembers[0].Family, actual[0].Family);
+            Assert.AreEqual(expectedMembers[0].MemberId, actual[0].MemberId);
+            Assert.AreEqual(expectedMembers[1].LastName, actual[1].LastName);
+            Assert.AreEqual(expectedMembers[0].Group, actual[0].Group);
+            Assert.AreEqual(expectedMembers[0].Updated, actual[0].Updated);
+            //Assert.AreEqual(expectedMembers[0], actual[0]);
+
+        }
     }
 }
+
+
+
