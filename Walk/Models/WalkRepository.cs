@@ -99,5 +99,73 @@ namespace Walk.Models
             return allActivities;
 
         }
+
+        public bool CreateGroup(Member member1, string groupName)
+        {
+            Group a_group = new Group { GroupName = groupName, Members = new List<Member> {  member1 }, Updated = DateTime.Now };
+            bool is_added = true;
+            try
+            {
+                Group added_group = _context.Group.Add(a_group);
+                _context.SaveChanges();
+
+            }
+            catch (Exception)
+            {
+                is_added = false;
+            }
+            return is_added;
+        }
+
+        public bool CreateMember(string firstName, string lastName, Family family1, Group group1)
+        {
+            Member a_member = new Member { FirstName = firstName, LastName = lastName, Family = family1, Group = group1, Updated = DateTime.Now };
+            bool is_added = true;
+            try
+            {
+                Member added_member = _context.Members.Add(a_member);
+                _context.SaveChanges();
+
+            }
+            catch (Exception)
+            {
+                is_added = false;
+            }
+            return is_added;
+        }
+
+        public bool CreateFamily(string familyName)
+        {
+            Family a_family = new Family { FamilyName = familyName, Updated = DateTime.Now };
+            bool is_added = true;
+            try
+            {
+                Family added_famiily = _context.Families.Add(a_family);
+                _context.SaveChanges();
+
+            }
+            catch (Exception)
+            {
+                is_added = false;
+            }
+            return is_added;
+        }
+
+        public bool CreateActivity(string activityName, double distance, Member member1)
+        {
+            Activities an_activity = new Activities { ActivityName = activityName, Distance = distance, Participant = member1, Date = DateTime.Now };
+            bool is_added = true;
+            try
+            {
+                Activities added_activities = _context.Activities.Add(an_activity);
+                _context.SaveChanges();
+
+            }
+            catch (Exception)
+            {
+                is_added = false;
+            }
+            return is_added;
+        }
     }
     }

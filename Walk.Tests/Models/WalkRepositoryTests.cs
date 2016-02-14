@@ -413,6 +413,71 @@ namespace Walk.Tests.Models
             Assert.AreEqual(1.1d, actualGroupActivities[0].Distance);
 
         }
+
+        [TestMethod]
+        public void WalkEnsureICanCreateAGroup()
+        {
+            // Arrange
+            List<Group> expected_groups = new List<Group>(); 
+            ConnectMocksToDataStore(expected_groups);
+            Member Member1 = new Member { LastName = "Rice" };
+            string groupName = "St Andrew";
+            mock_group_set.Setup(j => j.Add(It.IsAny<Group>())).Callback((Group s) => expected_groups.Add(s));
+            // Act
+            bool successful = repository.CreateGroup(Member1, groupName);
+
+            // Assert
+            Assert.AreEqual(1, repository.GetAllGroups().Count);
+
+        }
+
+        [TestMethod]
+        public void WalkEnsureICanCreateAMember()
+        {
+            // Arrange
+            DateTime base_time = DateTime.Now;
+            List<Member> expected_members = new List<Member>();
+            ConnectMocksToDataStore(expected_members);
+            Family family1 = new Family { FamilyName = "Rice", Updated = base_time };
+            Group group1 = new Group { GroupName = "St. Andrew" };
+            string firstName = "Laura";
+            string lastName = "Rice";
+            
+            mock_member_set.Setup(j => j.Add(It.IsAny<Member>())).Callback((Member s) => expected_members.Add(s));
+            // Act
+            bool successful = repository.CreateMember(firstName, lastName, family1, group1);
+
+            // Assert
+            Assert.AreEqual(1, repository.GetAllMembers().Count);
+
+        }
+
+        [TestMethod]
+        public void WalkEnsureICanCreateAFamily()
+        {
+            List<Family> expected_families = new List<Family>();
+            ConnectMocksToDataStore(expected_families);
+            string familyName = "Rice";
+            mock_family_set.Setup(j => j.Add(It.IsAny<Family>())).Callback((Family s) => expected_families.Add(s));
+            bool successful = repository.CreateFamily(familyName);
+
+            Assert.AreEqual(1, repository.GetAllFamilies().Count);
+        }
+
+        [TestMethod]
+        public void WalkEnsureICanCrateAnActivity()
+        {
+            List<Activities> expected_activities = new List<Activities>();
+            ConnectMocksToDataStore(expected_activities);
+            string activityName = "walk";
+            double distance = 1.1d;
+            Member member1 = new Member { LastName = "Rice" };
+            mock_activity_set.Setup(j => j.Add(It.IsAny<Activities>())).Callback((Activities s) => expected_activities.Add(s));
+            bool successful = repository.CreateActivity(activityName, distance, member1);
+
+            Assert.AreEqual(1, repository.GetAllActivities().Count);
+        }
+    
     }
 }
 
