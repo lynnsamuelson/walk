@@ -16,6 +16,7 @@ namespace Walk.Models
         [Required]
         public double Distance { get; set; }
         public DateTime Date { get; set; }
+        public Member Participant { get; set; }
         [Key]
         public int ActivityId { get; set; }
     }

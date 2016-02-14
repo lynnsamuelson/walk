@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 
+
 namespace Walk.Models
 {
     public class WalkRepository
@@ -63,6 +64,40 @@ namespace Walk.Models
         {
             var query = from u in _context.Members where u.Group.GroupId == testGroup.GroupId select u;
             return query.ToList();
+        }
+
+        public List<Activities> GetMembersActivities(Member member)
+        {
+            if (member != null)
+            {
+                var person = GetMemberById(member);
+                var ActivityQuery = from activity in _context.Activities where activity.Participant.MemberId == person.MemberId select activity;
+                var memberActivities = ActivityQuery.ToList();
+                return memberActivities;
+            }
+            else
+            {
+                return new List<Activities> { new Activities() { ActivityName = "Please Add and Activity" } };
+            }
+        }
+
+        public List<Activities> GetGroupActivities(Group groupToTest)
+        {
+            List<Activities> allActivities = new List<Activities>
+            {
+
+            };
+            if (groupToTest != null)
+            {
+                var thisGroup = GetAllGroupMembers(groupToTest);
+                foreach (Member person in thisGroup)
+                {
+                    var personActivities = GetMembersActivities(person);
+                    allActivities.AddRange(personActivities);
+                }
+            }
+            return allActivities;
+
         }
     }
     }

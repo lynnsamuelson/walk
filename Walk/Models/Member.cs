@@ -13,7 +13,7 @@ namespace Walk.Models
         public string LastName { get; set; }
         public virtual Family Family { get; set; }
         public DateTime Updated { get; set; }
-        public List<Activities> Activities {get; set;}
+        //public virtual List<Activities> Activities {get; set;}
         public virtual Group Group { get; set; }
 
     }

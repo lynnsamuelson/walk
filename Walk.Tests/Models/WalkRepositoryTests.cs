@@ -213,8 +213,8 @@ namespace Walk.Tests.Models
             Member actual = repository.GetMemberById(expected[0]);
 
             Assert.AreEqual("Anderson", actual.LastName);
-           
         }
+
 
         [TestMethod]
         public void WalkContextEnsureCanGetMembersForAFamily()
@@ -256,7 +256,7 @@ namespace Walk.Tests.Models
         }
 
         [TestMethod]
-        public void WalkContextEnsureCanGetMembersForAGroup()
+        public void WalkRepositoryEnsureCanGetMembersForAGroup()
         {
             var time = DateTime.Now;
             var family = new Family { FamilyName = "Anderson", FamilyId = 1, Updated = time };
@@ -295,6 +295,122 @@ namespace Walk.Tests.Models
             Assert.AreEqual(expectedMembers[0].Group, actual[0].Group);
             Assert.AreEqual(expectedMembers[0].Updated, actual[0].Updated);
             //Assert.AreEqual(expectedMembers[0], actual[0]);
+
+        }
+
+        [TestMethod]
+        public void WalkRepositoryEnsureICanGetMembersActivities()
+        {
+
+            var time = DateTime.Now;
+            var family = new Family { FamilyName = "Anderson", FamilyId = 1, Updated = time };
+            var family2 = new Family { FamilyName = "Anderson", FamilyId = 2, Updated = time };
+            var group1 = new Group { GroupId = 1, GroupName = "St. Andrew" };
+            var group2 = new Group { GroupId = 2, GroupName = "Fron" };
+
+            var members = new List<Member> {
+                new Member { MemberId = 1, LastName = "Anderson", FirstName = "Bernie", Family = family, Updated = time, Group
+                 = group1 },
+                new Member { MemberId = 2, LastName = "Rice", FirstName = "Laura", Family = family2, Updated = time, Group = group2 },
+                new Member { MemberId = 3, LastName = "Anderson", FirstName = "Ruby", Family = family, Updated = time, Group = group1 },
+                new Member { MemberId = 4, LastName = "Rice", FirstName = "Adam", Family = family2, Updated = time, Group = group2 },
+                new Member { MemberId = 5, LastName = "Anderson", FirstName = "Samuel", Family = family, Updated = time, Group = group1 },
+                new Member { MemberId = 6, LastName = "Rice", FirstName = "Noah", Family = family2, Updated = time, Group = group2 }
+            };
+
+            mock_member_set.Object.AddRange(members);
+            ConnectMocksToDataStore(members);
+
+            var activities = new List<Activities>
+            {
+                new Activities {ActivityId = 1, ActivityName = "walking", Distance = 1.1d, Date = time, Participant =  members[0]},
+                new Activities {ActivityId = 2, ActivityName = "run", Distance = 3.5d, Date = time, Participant =  members[3]},
+                new Activities {ActivityId = 3, ActivityName = "swim", Distance = 8d, Date = time, Participant =  members[0] },
+                new Activities {ActivityId = 4, ActivityName = "eliptical", Distance = 5d, Date = time, Participant =  members[1] },
+                new Activities {ActivityId = 5, ActivityName = "swim", Distance = 6.3d, Date = time, Participant =  members[5]},
+                new Activities {ActivityId = 6, ActivityName = "walking", Distance = 7.8d, Date = time, Participant =  members[2]  },
+                new Activities {ActivityId = 7, ActivityName = "run", Distance = 12.4d, Date = time, Participant =  members[4] }
+            };
+            mock_activity_set.Object.AddRange(activities);
+            ConnectMocksToDataStore(activities);
+
+            Member Bernie = new Member
+            {
+                MemberId = 1,
+                LastName = "Anderson",
+                FirstName = "Bernie",
+                Family = family,
+                Updated = time,
+                Group
+                 = group1
+            };
+            Member Noah = new Member { MemberId = 6, LastName = "Rice", FirstName = "Noah", Family = family2, Updated = time, Group = group2 };
+
+            Member actual = repository.GetMemberById(members[0]);
+            var BernieActivities = repository.GetMembersActivities(Bernie);
+            var NoahActivities = repository.GetMembersActivities(Noah);
+
+            Assert.AreEqual("walking", BernieActivities.First().ActivityName);
+            Assert.AreEqual("swim", BernieActivities[1].ActivityName);
+            Assert.AreEqual("swim", NoahActivities.First().ActivityName);
+            Assert.AreEqual(6.3d, NoahActivities[0].Distance);
+
+        }
+
+        [TestMethod]
+        public void WalkRepositoryGetGroupsActivities()
+        {
+            var time = DateTime.Now;
+            var family = new Family { FamilyName = "Anderson", FamilyId = 1, Updated = time };
+            var family2 = new Family { FamilyName = "Anderson", FamilyId = 2, Updated = time };
+
+            var groups = new List<Group>
+            {
+                new Group { GroupId = 1, GroupName = "St. Andrew" },
+                new Group { GroupId = 2, GroupName = "Fron" }
+            };
+            mock_group_set.Object.AddRange(groups);
+            ConnectMocksToDataStore(groups);
+
+            var members = new List<Member> {
+                new Member { MemberId = 1, LastName = "Anderson", FirstName = "Bernie", Family = family, Updated = time, Group
+                 = groups[0] },
+                new Member { MemberId = 2, LastName = "Rice", FirstName = "Laura", Family = family2, Updated = time, Group = groups[0] },
+                new Member { MemberId = 3, LastName = "Anderson", FirstName = "Ruby", Family = family, Updated = time, Group = groups[0] },
+                new Member { MemberId = 4, LastName = "Rice", FirstName = "Adam", Family = family2, Updated = time, Group = groups[1] },
+                new Member { MemberId = 5, LastName = "Anderson", FirstName = "Samuel", Family = family, Updated = time, Group = groups[1] },
+                new Member { MemberId = 6, LastName = "Rice", FirstName = "Noah", Family = family2, Updated = time, Group = groups[1] }
+            };
+
+            mock_member_set.Object.AddRange(members);
+            ConnectMocksToDataStore(members);
+
+            var activities = new List<Activities>
+            {
+                new Activities {ActivityId = 1, ActivityName = "walking", Distance = 1.1d, Date = time, Participant =  members[0]},
+                new Activities {ActivityId = 2, ActivityName = "run", Distance = 3.5d, Date = time, Participant =  members[3]},
+                new Activities {ActivityId = 3, ActivityName = "swim", Distance = 8d, Date = time, Participant =  members[0] },
+                new Activities {ActivityId = 4, ActivityName = "eliptical", Distance = 5d, Date = time, Participant =  members[1] },
+                new Activities {ActivityId = 5, ActivityName = "swim", Distance = 6.3d, Date = time, Participant =  members[5]},
+                new Activities {ActivityId = 6, ActivityName = "walking", Distance = 7.8d, Date = time, Participant =  members[2]  },
+                new Activities {ActivityId = 7, ActivityName = "run", Distance = 12.4d, Date = time, Participant =  members[4] }
+            };
+            mock_activity_set.Object.AddRange(activities);
+            ConnectMocksToDataStore(activities);
+
+
+            List<Activities> actualGroupActivities = repository.GetGroupActivities(groups[0]);
+            var group1 = new Group { GroupId = 1, GroupName = "St. Andrew" };
+            var group2 = new Group { GroupId = 2, GroupName = "Fron" };
+            var group1Activities = new List<Activities>
+            {
+                new Activities {ActivityId = 1, ActivityName = "walking", Distance = 1.1d, Date = time, Participant =  members[0]},
+                new Activities {ActivityId = 3, ActivityName = "swim", Distance = 8d, Date = time, Participant =  members[0] },
+                new Activities {ActivityId = 4, ActivityName = "eliptical", Distance = 5d, Date = time, Participant =  members[1] },
+                new Activities {ActivityId = 6, ActivityName = "walking", Distance = 7.8d, Date = time, Participant =  members[2]  }
+            };
+
+            Assert.AreEqual(1.1d, actualGroupActivities[0].Distance);
 
         }
     }

@@ -40,12 +40,12 @@ namespace Walk.Tests.Models
             a_member.Family = null;
             a_member.FirstName = "Joe";
             a_member.Updated = expected_time;
-            a_member.Activities = ListActivities;
+            //a_member.Activities = ListActivities;
 
             Assert.AreEqual(1, a_member.MemberId);
             Assert.AreEqual("Joe", a_member.FirstName);
             Assert.AreEqual(null, a_member.Family);
-            Assert.AreEqual(ListActivities, a_member.Activities);
+            ///Assert.AreEqual(ListActivities, a_member.Activities);
             Assert.AreEqual(expected_time, a_member.Updated);
         }
 
@@ -75,12 +75,12 @@ namespace Walk.Tests.Models
                 Family = null,
                 FirstName = "Joe",
                 Updated = expected_time,
-                Activities = ListActivities
+                //Activities = ListActivities
             };
             Assert.AreEqual(1, a_member.MemberId);
             Assert.AreEqual("Joe", a_member.FirstName);
             Assert.AreEqual(null, a_member.Family);
-            Assert.AreEqual(ListActivities, a_member.Activities);
+            //Assert.AreEqual(ListActivities, a_member.Activities);
             Assert.AreEqual(expected_time, a_member.Updated);
         }
     }
