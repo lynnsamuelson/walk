@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Walk.Models
 {
-    public class WalkContext : DbContext
+    public class WalkContext : ApplicationDbContext
     { 
         public virtual DbSet<Group> Group { get; set; }
         public virtual DbSet<Family> Families { get; set; }
